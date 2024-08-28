@@ -1,22 +1,21 @@
 import React from 'react';
 import QRCodeComponent from './components/QRCodeComponent';
 import ShortenURLComponent from './components/ShortenURLComponent';
+import Header from './components/HeaderComponent';
+import Hero from './components/HeroComponent';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 function App() {
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <div className="flex flex-row space-x-8">
-        <div className="bg-fuchsia-100 p-6 rounded shadow-md">
-          <h1 className="text-2xl font-bold mb-4">QR Code Generator</h1>
-          <QRCodeComponent />
-        </div>
-        <div className="bg-teal-100 p-6 rounded shadow-md">
-          <h1 className="text-2xl font-bold mb-4">URL Shortener</h1>
-          <ShortenURLComponent />
-        </div>
-      </div>
-    </div>
-  );
+    return (
+
+        <Router>
+            <Routes>
+                <Route path={"/"} element={<Hero/>}/>
+                <Route path={"/qr-code"} element={<div><Header /><QRCodeComponent/></div>}/>
+                <Route path={"/shorten-url"} element={<div><Header /><ShortenURLComponent/></div>}/>
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
