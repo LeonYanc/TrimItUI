@@ -27,9 +27,11 @@ const ShortenURLComponent = () => {
         }
 
         try {
-            const response = await axios.post(`http://localhost:8080/url/shorten/`, null, {
-                params: { longURL: encodeURIComponent(longURL), type: encodeURIComponent(type) }
-            });
+            const response = await axios.post(
+                `http://localhost:8080/url/shorten/`,
+                { longURL, type },
+                { headers: { 'Content-Type': 'application/json' } }
+            );
             setShortURL(response.data);
             setError(null);
         } catch (error) {
@@ -66,6 +68,7 @@ const ShortenURLComponent = () => {
                         >
                             <option value="base62to10">Base62</option>
                             <option value="hash">Hash</option>
+                            <option value="hybrid">Hybrid</option>
                         </select>
                     </div>
                     <button
