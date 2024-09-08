@@ -1,4 +1,3 @@
-// QRCodeComponent.jsx
 import React, { useState } from 'react';
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import axios from 'axios';
@@ -12,7 +11,7 @@ const QRCodeComponent = () => {
         try {
             new URL(string);
             return true;
-        } catch (_) {
+        } catch {
             return false;
         }
     };
@@ -24,10 +23,12 @@ const QRCodeComponent = () => {
         }
 
         try {
-            const response = await axios.get(`http://localhost:8080/url/generateQR/`, {
-                params: { url: encodeURIComponent(url) }
-            });
-            setQrCode(response.data);
+            const response = await axios.post(
+                `http://localhost:8080/qr/generateQR/`,
+                { url },
+                { headers: { 'Content-Type': 'application/json; charset=utf-8' } }
+            );
+            setQrCode(response.data); // Backend returns the QR code as a base64 string
             setError(null);
         } catch (error) {
             setError(error.response ? error.response.data : error.message);
