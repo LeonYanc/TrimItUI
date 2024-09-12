@@ -1,15 +1,22 @@
-// HeaderComponent.jsx
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Link } from 'react-router-dom';
 
 const navigation = [
   { name: 'QR Code Generator', href: '/qr-code' },
   { name: 'URL Shortener', href: '/shorten-url' },
+  { name: 'QR List', href: '/qrlist' }, // Added new link to QR List
 ];
 
-export default function HeaderComponent() {
+export default function HeaderComponent({ username, setUsername }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem('username');
+    setUsername('');
+  };
 
   return (
       <header className="bg-white shadow">
@@ -38,9 +45,18 @@ export default function HeaderComponent() {
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-              Log in <span aria-hidden="true">&rarr;</span>
-            </a>
+            {username ? (
+              <button
+                onClick={handleLogout}
+                className="text-sm font-semibold leading-6 text-gray-900"
+              >
+                Logout
+              </button>
+            ) : (
+              <a href="/login" className="text-sm font-semibold leading-6 text-gray-900">
+                Log in <span aria-hidden="true">&rarr;</span>
+              </a>
+            )}
           </div>
         </nav>
         <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
@@ -74,12 +90,21 @@ export default function HeaderComponent() {
                   ))}
                 </div>
                 <div className="py-6">
-                  <a
-                      href="#"
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Log in
-                  </a>
+                  {username ? (
+                    <button
+                      onClick={handleLogout}
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900"
+                    >
+                      Logout
+                    </button>
+                  ) : (
+                    <a
+                        href="/login"
+                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      Log in
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
@@ -88,3 +113,8 @@ export default function HeaderComponent() {
       </header>
   );
 }
+
+HeaderComponent.propTypes = {
+  username: PropTypes.string,
+  setUsername: PropTypes.func.isRequired,
+};
