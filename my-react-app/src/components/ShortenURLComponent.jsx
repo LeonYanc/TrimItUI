@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { CheckCircleIcon, DocumentDuplicateIcon } from "@heroicons/react/16/solid";
 import axios from 'axios';
+import {jwtDecode} from "jwt-decode";
 
 const ShortenURLComponent = () => {
     const [longURL, setLongURL] = useState('');
@@ -15,7 +16,7 @@ const ShortenURLComponent = () => {
         try {
             new URL(string);
             return true;
-        } catch (_) {
+        } catch {
             return false;
         }
     };
@@ -27,9 +28,13 @@ const ShortenURLComponent = () => {
         }
 
         try {
+            const token = localStorage.getItem('jwtToken');
+            const decodedToken = jwtDecode(token);
+            const generatedBy = decodedToken.sub;
+            console.log('JWT Token:', token); // Print the JWT token
             const response = await axios.post(
                 `http://localhost:8080/url/shorten/`,
-                { longURL, type },
+                { longURL, type ,generatedBy},
                 { headers: { 'Content-Type': 'application/json' } }
             );
             setShortURL(response.data);
