@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import axios from 'axios';
+import {jwtDecode} from 'jwt-decode';
 
 const QRCodeComponent = () => {
     const [url, setUrl] = useState('');
@@ -23,14 +24,19 @@ const QRCodeComponent = () => {
         }
 
         try {
+            const token = localStorage.getItem('jwtToken');
+            const decodedToken = jwtDecode(token);
+            const generatedBy = decodedToken.sub;
+
             const response = await axios.post(
                 `http://localhost:8080/qr/generateQR/`,
-                { url },
-                { headers: { 'Content-Type': 'application/json; charset=utf-8' } }
+                { url, generatedBy },
+                { headers: { 'Content-Type': 'application/json; charset=utf-8', 'Authorization': `Bearer ${token}` }}
             );
             setQrCode(response.data); // Backend returns the QR code as a base64 string
             setError(null);
         } catch (error) {
+            console.error('Error:', error); // Debugging: Log the error
             setError(error.response ? error.response.data : error.message);
         }
     };
