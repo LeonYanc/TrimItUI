@@ -46,16 +46,23 @@ const QRCodeList = ({}) => {
         }
     }, [username]);
 
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+     return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 pt-16">
             <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-4xl">
                 <h1 className="text-2xl font-bold mb-4 text-gray-900">QR Codes for {username}</h1>
                 {error && <div className="text-red-500 mb-4">{error}</div>}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="flex flex-col gap-4">
                     {qrCodes.map(qrCode => (
-                        <div key={qrCode.id} className="bg-gray-200 p-4 rounded-lg shadow-md">
-                            <p className="mb-2 text-gray-700">Data: {qrCode.url}</p>
-                            <img src={`data:image/png;base64,${qrCode.qrCodeBase64}`} alt="QR Code" className="w-full h-auto" />
+                        <div key={qrCode.id} className="bg-white p-4 rounded-lg shadow-md flex flex-row justify-between items-center">
+                            <div className="flex flex-col">
+                                <p className="mb-2 text-gray-700 font-semibold">
+                                    QR Code for {qrCode.url.length > 20 ? `${qrCode.url.substring(0, 20)}...` : qrCode.url}
+                                </p>
+
+                            </div>
+                            <div className="flex flex-col items-center">
+                                <img src={`data:image/png;base64,${qrCode.qrCodeBase64}`} alt="QR Code" className="w-24 h-24 mb-4" />
+                            </div>
                         </div>
                     ))}
                 </div>
