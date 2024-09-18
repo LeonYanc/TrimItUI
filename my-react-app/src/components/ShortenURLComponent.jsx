@@ -35,7 +35,7 @@ const ShortenURLComponent = () => {
             const response = await axios.post(
                 `http://localhost:8080/url/shorten/`,
                 { longURL, type ,generatedBy},
-                { headers: { 'Content-Type': 'application/json' } }
+                { headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`  } }
             );
             setShortURL(response.data);
             setError(null);
