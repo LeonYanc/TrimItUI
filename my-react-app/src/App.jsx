@@ -7,6 +7,7 @@ import ShortenURLComponent from './components/ShortenURLComponent';
 import UserAuthComponent from './components/UserAuthComponent';
 import HeroComponent from './components/HeroComponent';
 import QRCodeList from "./components/QRCodeList.jsx";
+import UrlList from "./components/UrlList.jsx";
 
 function App() {
   const [username, setUsername] = useState('');
@@ -27,6 +28,7 @@ function App() {
         <Route path="/login" element={<UserAuthComponent setUsername={setUsername} />} />
         <Route path="/" element={<HeroComponent />} />
         <Route path="/qrlist" element={<QRCodeList username={username}/>} />
+        <Route path="/urlist" element={<UrlList username={username}/>} />
       </Routes>
     </Router>
   );

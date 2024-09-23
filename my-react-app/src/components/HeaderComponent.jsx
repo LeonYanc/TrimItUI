@@ -8,6 +8,7 @@ const navigation = [
   { name: 'QR Code Generator', href: '/qr-code' },
   { name: 'URL Shortener', href: '/shorten-url' },
   { name: 'QR List', href: '/qrlist' }, // Added new link to QR List
+  { name: 'URL List', href: '/urlist' }, // Added new link to URL List
 ];
 
 export default function HeaderComponent({ username, setUsername }) {
