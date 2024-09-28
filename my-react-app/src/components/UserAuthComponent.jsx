@@ -59,6 +59,25 @@ const UserAuthComponent = ({ setUsername }) => {
         setSuccess('Logged out successfully!');
     };
 
+    const handleOAuth2Login = () => {
+        window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    };
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        console.log(token)
+        if (token) {
+            localStorage.setItem('jwtToken', token);
+            const decodedToken = jwtDecode(token);
+            setUsername(decodedToken.sub);
+            setIsLoggedIn(true);
+            setSuccess('OAuth2 login successful!');
+            setError(null);
+            window.location.href = 'http://localhost:5173/';
+        }
+    }, [setUsername]);
+
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
             <div className="bg-white p-6 rounded-lg shadow-md">
@@ -95,6 +114,12 @@ const UserAuthComponent = ({ setUsername }) => {
                                 className="mb-4 p-2 bg-green-600 text-white rounded hover:bg-green-500"
                             >
                                 Login
+                            </button>
+                            <button
+                                onClick={handleOAuth2Login}
+                                className="mb-4 p-2 bg-blue-600 text-white rounded hover:bg-blue-500"
+                            >
+                                Login with Google
                             </button>
                         </>
                     )}
